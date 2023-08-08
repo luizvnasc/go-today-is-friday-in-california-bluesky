@@ -19,6 +19,7 @@ var (
 	blueskyAppkey = os.Getenv("blueskyAppkey")
 	repo          = os.Getenv("repo")
 	BaseURL       = os.Getenv("baseUrl")
+	port          = os.Getenv("process.env.PORT")
 )
 
 func main() {
@@ -32,8 +33,8 @@ func main() {
 
 	s := gocron.NewScheduler(time.UTC)
 	_, err := s.Every(5).Seconds().Do(func() {
-		rest.Get(BaseURL)
-		log.Printf("keeping alive... %v")
+		resp := rest.Get(BaseURL)
+		log.Printf("keeping alive... %v", resp.Response.StatusCode)
 	})
 
 	if err != nil {
@@ -58,7 +59,7 @@ func main() {
 		return c.SendString("Hello, World!")
 	})
 
-	log.Fatal(app.Listen(":8080"))
+	log.Fatal(app.Listen(":" + port))
 
 }
 
