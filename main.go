@@ -40,7 +40,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	_, err = s.Every(1).Friday().Do(func() {
+	_, err = s.Every(1).Friday().At("09:30").Do(func() {
 		err := todayIsFridayInCalifornia()
 		if err != nil {
 			log.Fatal(err)
