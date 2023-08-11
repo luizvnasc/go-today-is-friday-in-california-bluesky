@@ -33,8 +33,7 @@ func main() {
 
 	s := gocron.NewScheduler(time.UTC)
 	_, err := s.Every(5).Seconds().Do(func() {
-		resp := rest.Get(BaseURL)
-		log.Printf("keeping alive... %v", resp.Response.StatusCode)
+		rest.Get(BaseURL)
 	})
 
 	if err != nil {
