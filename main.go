@@ -19,7 +19,7 @@ var (
 	blueskyAppkey = os.Getenv("blueskyAppkey")
 	repo          = os.Getenv("repo")
 	BaseURL       = os.Getenv("baseUrl")
-	port          = os.Getenv("process.env.PORT")
+	port          = os.Getenv("PORT")
 )
 
 func main() {
@@ -58,7 +58,9 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
 	})
-
+	if port == "" {
+		port = "8080"
+	}
 	log.Fatal(app.Listen(":" + port))
 
 }
