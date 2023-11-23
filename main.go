@@ -3,16 +3,18 @@ package main
 import (
 	"context"
 	"errors"
+	"log"
+	"os"
+	"time"
+
 	"github.com/bluesky-social/indigo/api/bsky"
 	"github.com/go-co-op/gocron"
 	"github.com/gofiber/fiber/v2"
 	"github.com/luizvnasc/bluesky.bot/post"
 	"github.com/mercadolibre/golang-restclient/rest"
-	"log"
-	"os"
-	"time"
+
+	bluesky "github.com/karalabe/go-bluesky"
 )
-import bluesky "github.com/karalabe/go-bluesky"
 
 var (
 	blueskyHandle = os.Getenv("blueskyHandle")
@@ -32,7 +34,8 @@ func main() {
 	println(BaseURL)
 
 	s := gocron.NewScheduler(time.UTC)
-	_, err := s.Every(5).Seconds().Do(func() {
+	_, err := s.Every(5).Minutes().Do(func() {
+		log.Println("waking up the pod")
 		rest.Get(BaseURL)
 	})
 
