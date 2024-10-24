@@ -13,7 +13,7 @@ import (
 	"github.com/luizvnasc/bluesky.bot/post"
 	"github.com/mercadolibre/golang-restclient/rest"
 
-	bluesky "github.com/karalabe/go-bluesky"
+	bluesky "github.com/luizvnasc/go-bluesky"
 )
 
 var (
@@ -33,6 +33,7 @@ func main() {
 	println(repo)
 	println(BaseURL)
 
+	todayIsFridayInCalifornia()
 	s := gocron.NewScheduler(time.UTC)
 	_, err := s.Every(5).Minutes().Do(func() {
 		log.Println("waking up the pod")
@@ -67,8 +68,8 @@ func main() {
 
 }
 
-func login(ctx context.Context, handle, appkey string) (*bluesky.Client, error) {
-	client, err := bluesky.Dial(ctx, bluesky.ServerBskySocial)
+func login(ctx context.Context, host, handle, appkey string) (*bluesky.Client, error) {
+	client, err := bluesky.Dial(ctx, host)
 	if err != nil {
 		panic(err)
 	}
@@ -87,7 +88,7 @@ func login(ctx context.Context, handle, appkey string) (*bluesky.Client, error) 
 
 func todayIsFridayInCalifornia() (err error) {
 	ctx := context.Background()
-	client, err := login(ctx, blueskyHandle, blueskyAppkey)
+	client, err := login(ctx, bluesky.ServerBskySocial, blueskyHandle, blueskyAppkey)
 	defer client.Close()
 
 	file, err := os.Open("resources/TodayIsFridayInCalifornia.jpg")
@@ -95,8 +96,9 @@ func todayIsFridayInCalifornia() (err error) {
 		log.Fatal(err)
 		return
 	}
+	defer file.Close()
 
-	image, err := post.UploadBlob(ctx, client, file)
+	gif, err := post.UploadBlob(ctx, client, file)
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -109,7 +111,7 @@ func todayIsFridayInCalifornia() (err error) {
 			EmbedImages: &bsky.EmbedImages{
 				Images: []*bsky.EmbedImages_Image{
 					{
-						Image: image,
+						Image: gif.Blob,
 					},
 				},
 			},
