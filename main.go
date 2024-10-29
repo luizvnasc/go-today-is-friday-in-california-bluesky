@@ -13,6 +13,8 @@ import (
 	"github.com/luizvnasc/bluesky.bot/post"
 	"github.com/mercadolibre/golang-restclient/rest"
 
+	//"github.com/mercadolibre/golang-restclient/rest"
+
 	bluesky "github.com/luizvnasc/go-bluesky"
 )
 
