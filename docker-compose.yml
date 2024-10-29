@@ -10,5 +10,5 @@ services:
       - blueskyHandle=${blueskyHandle}
       - blueskyAppkey=${blueskyAppkey}
       - repo=${repo}
-      - BaseURL=${BaseURL}
-      - PORT=${PORT}
+      - baseURL=${baseURL}
+
