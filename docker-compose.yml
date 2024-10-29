@@ -1,0 +1,14 @@
+# Create a service the runs the dockerfile of the folder
+services:
+  app:
+    build: .
+    container_name: todayIsFridayInCalifornia
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - blueskyHandle=${blueskyHandle}
+      - blueskyAppkey=${blueskyAppkey}
+      - repo=${repo}
+      - BaseURL=${BaseURL}
+      - PORT=${PORT}
